@@ -1,0 +1,19 @@
+1.  Login e registrazione (con password criptata MD5)
+
+2.  Gestione login con pagina dedicata e redirect alla pagina elencoFilm.php
+
+3.  Pagina elencoFilm.php che impagina in una Table le caratteristiche principali di tutti i film disponibili.
+    Cliccando sui singoli titoli si apre la pagina di dettaglio.
+
+4.  La schedaFilm.php riceve via GET l'ID del film selezionato e visualizza il dettaglio del film (compresa la locandina)
+
+5.  Aggiungere un filtro in base al genere (pagina con textbox richiede via AJAX la lista di film filtrata)
+
+6.  Creare un utente amministratore che può inserire/cancellare dalla programmazione un film
+    (aggiungere nella tabella utenti un flag che lo identifica)
+
+7.  In corrispondenza di ogni film aggiungere un link per la cancellazione
+    (visibile solo all’amministratore) con richiesta di conferma
+
+8.  In fondo alla pagina elencoFilm.php aggiungere un link alla pagina inserisci.php per inserire un nuovo film
+    (visibile solo all’amministratore) con upload dell'immagine della locandina (<input type="file"...>) prevedere l'upload dell'immagine tramite AJAX!
