@@ -9,7 +9,27 @@
             });
 
             function verificaUtente(){
-                $.get
+                $.get("getUtenti.php", {}, function(data){
+                    
+                    let user = $("#username").val();
+                    let psw = $("#password").val();
+
+                    for(let i = 0; i < data.length; i++){
+                        if(data[i]["username"] == user && data[i]["password"] == psw){
+                            $.ajax({
+                                url: "elencoFilm.php",
+                                type: "POST",
+                                data: { username: user},
+                                success: function(response){
+                                    window.location.href = "elencoFilm.php";
+                                }
+                            });
+                            return;
+                        }
+                    }
+
+                    $("#risultato").text = "login errato, riprova";
+                });
             }
         </script>
     </head>
