@@ -5,7 +5,7 @@
 - username : varchar(16)
 - password : varchar(32)
 - amministratore : int DEFAULT 0
-PRIMARY KEY (ID)
+- PRIMARY KEY (ID)
 
 
 ### film
@@ -14,17 +14,17 @@ PRIMARY KEY (ID)
 - genere : varchar(16)
 - durata : int
 - locandina : blob
-PRIMARY KEY (ID)
+- PRIMARY KEY (ID)
 
 
 ### genere
 - ID : int AUTO_INCREMENT
 - nome : varchar(16)
-PRIMARY KEY (ID)
+- PRIMARY KEY (ID)
 
 
 ### film-genere
 - idFilm : int
 - idGenere : int
-FOREIGN KEY (idFilm) REFERENCES film(ID)
-FOREIGN KEY (idGenere) REFERENCES genere(ID)
+- FOREIGN KEY (idFilm) REFERENCES film(ID)
+- FOREIGN KEY (idGenere) REFERENCES genere(ID)
