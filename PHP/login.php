@@ -1,42 +1,38 @@
-<html>
-    <head>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script>
-            $("document").ready(function(){
-                $("login").click(function(){
-                    verificaUtente();
-                });
-            });
+<?php
+    if(!isset($_SESSION)){
+        session_start();
+    }
 
-            function verificaUtente(){
-                $.get("getUtenti.php", {}, function(data){
-                    
-                    let user = $("#username").val();
-                    let psw = $("#password").val();
+    
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
+        
+        //controllare se l'utente è registrato nel db
+        $user = $_POST["username"];
+        $psw = $_POST["password"];
 
-                    for(let i = 0; i < data.length; i++){
-                        if(data[i]["username"] == user && data[i]["password"] == psw){
-                            $.ajax({
-                                url: "elencoFilm.php",
-                                type: "POST",
-                                data: { username: user},
-                                success: function(response){
-                                    window.location.href = "elencoFilm.php";
-                                }
-                            });
-                            return;
-                        }
-                    }
 
-                    $("#risultato").text = "login errato, riprova";
-                });
-            }
-        </script>
-    </head>
-    <body>
-        username: <input id="username" type="text"><br>
-        password: <input id="password" type="password"><br>
-        <button id="login">Login</button><br>
-        <p id="risultato"></p>
-    </body>
-</html>
+        //mi collego al db e cerco l'utente
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "prenotazionecinema";
+
+
+        $mysqli = new mysqli($servername, $username, $password, $dbname);
+        $mysqli->set_charset('utf8mb4');
+
+        $result = $mysqli->query("SELECT * FROM utente WHERE username = '$user' AND password = '$psw'");
+
+        if($result->fetch_assoc() != null){
+            //utente autenticato
+            echo "200";
+            $_SESSION["username"] = $user;
+        }
+        else{
+            //utente non trovato
+            echo "404";
+        }
+    }
+    else{
+        echo "401";
+    }
