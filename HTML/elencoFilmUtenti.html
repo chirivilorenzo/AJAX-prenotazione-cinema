@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../CSS/style_elencoFilm.css">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script>
+            $("document").ready(function(){
+                aggiornaFilm();
+
+                $("#btn-genere").click(function(){
+
+                    let gen = $("#genere").val();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "../PHP/getGenereFilm.php",
+                        data: {genere: gen},
+                        success: function(response){
+                            $("#listaFilm").empty();
+
+                            if(response != "301"){
+                                for (let i = 0; i < response.length; i++){
+                                    addFilm(response[i]["locandina"], response[i]["titolo"], response[i]["ID"]);
+                                }  
+                            }
+                            else{
+                                alert("nessun film trovato con quel genere");
+                            }
+                        }
+                    });
+                });
+
+                $("#reset").click(function(){
+                    aggiornaFilm();
+                    $("#genere").val("");
+                });
+            });
+
+            function aggiornaFilm(){
+                $("#listaFilm").empty();
+                $.get("../PHP/getElencoFilm.php",{}, function(data){
+                    for (let i = 0; i < data.length; i++){
+                        addFilm(data[i]["locandina"], data[i]["titolo"], data[i]["ID"]);
+                    }
+                });
+            }
+
+            function addFilm(img, titolo, id){
+                let imgDOM = $("<img src='data:image/png;base64," + img + "'></img>");
+                let linkDOM = $("<a href='../PHP/schedaFilm.php?id=" + id + "'></a>");
+                let spanDOM = $("<span>" + titolo + "</span>");
+
+                let riga = $("<tr></tr>");
+                let cella = $("<td></td>");
+
+                linkDOM.append(spanDOM);
+
+                cella.append(imgDOM);
+                cella.append("<br>");
+                cella.append(linkDOM);
+
+                riga.append(cella);
+
+                $("#listaFilm").append(riga);
+            }
+        </script>
+    </head>
+    <body>
+        <input type="text" id="genere">
+        <button id="btn-genere">Cerca per genere</button>
+        <button id="reset">Resetta filtri</button>
+        <table id="listaFilm">
+        </table>
+    </body>
+</html>

@@ -37,7 +37,7 @@
 
             function aggiornaFilm(){
                 $("#listaFilm").empty();
-                $.get("../PHP/elencoFilm.php",{}, function(data){
+                $.get("../PHP/getElencoFilm.php",{}, function(data){
                     for (let i = 0; i < data.length; i++){
                         addFilm(data[i]["locandina"], data[i]["titolo"], data[i]["ID"]);
                     }
@@ -49,18 +49,48 @@
                 let linkDOM = $("<a href='../PHP/schedaFilm.php?id=" + id + "'></a>");
                 let spanDOM = $("<span>" + titolo + "</span>");
 
+                let linkDOM1 = $("<a href='javascript:void(0);'></a>");
+                let spanDOM1 = $("<span>Elimina</span>");
+
                 let riga = $("<tr></tr>");
                 let cella = $("<td></td>");
 
                 linkDOM.append(spanDOM);
+                linkDOM1.append(spanDOM1);
 
                 cella.append(imgDOM);
                 cella.append("<br>");
                 cella.append(linkDOM);
+                cella.append("<br>");
+                cella.append(linkDOM1);
 
                 riga.append(cella);
 
                 $("#listaFilm").append(riga);
+
+                linkDOM1.on("click", function(){
+                    if(confirm("Vuoi eliminare questo film?")){
+                        
+                        //chiamata AJAX
+                        $.ajax({
+                            type: "POST",
+                            url: "../PHP/eliminaFilm.php",
+                            data: {id: id},
+                            success: function(response){
+                                if(response == "200"){
+                                    alert("film eliminato con successo");
+                                    aggiornaFilm();
+                                }
+                                else if(response == "404"){
+                                    alert("film non trovato");
+                                }
+                                else{
+                                    alert("errore con il server");
+                                }
+                            }
+                        })
+                    }
+                });
             }
         </script>
     </head>

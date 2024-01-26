@@ -13,7 +13,13 @@
     $mysqli = new mysqli($servername, $username, $password, $dbname);
     $mysqli->set_charset('utf8mb4');
 
-    $result = $mysqli->query("SELECT * FROM film WHERE id='$idFilm'");
+    $query = "SELECT film.*, genere.nome AS nome_genere
+                FROM film
+                JOIN `film-genere` ON film.ID = `film-genere`.idFilm
+                JOIN genere ON `film-genere`.idGenere = genere.ID
+                WHERE film.ID = '$idFilm'";
+
+    $result = $mysqli->query($query);
 ?>
 <html>
     <head>
@@ -29,26 +35,27 @@
             </tr>
             <tr>
             <?php
-                if(($row = $result->fetch_assoc()) != null){
-                    //visualizza info film
-                    //echo "<tr>";
-                    echo "<td><img src='data:image/png;base64,". base64_encode($row["locandina"]) . "'/></td>";
-                    //echo "</tr>";
 
-                    //echo "<tr>";
-                    echo "<td>" . $row["titolo"] . "</td>";
-                    //echo "</tr>";
+                if($result){
+                    $generi = [];
 
-                    //echo "<tr>";
-                    echo "<td>" . $row["genere"] . "</td>";
-                    //echo "</tr>";
+                    while(($row = $result->fetch_assoc()) != null){
+                        $titolo = $row["titolo"];
+                        $durata = $row["durata"];
+                        $img = base64_encode($row["locandina"]);
 
-                    //echo "<tr>";
-                    echo "<td>" . $row["durata"] . "</td>";
-                    //echo "</tr>";
+                        $generi[] = $row["nome_genere"];
+                    }
+
+                    $gen = implode(", ", $generi);
+
+                    echo "<td><img src='data:image/png;base64,". $img . "'/></td>";
+                    echo "<td>" . $titolo . "</td>";
+                    echo "<td>" . $gen . "</td>";
+                    echo "<td>" . $durata . "</td>";
                 }
                 else{
-                    echo "nessun film trovato con id = " . $idFilm;
+                    echo "errore";
                 }
             ?>
             </tr>

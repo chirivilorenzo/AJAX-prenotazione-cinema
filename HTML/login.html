@@ -19,10 +19,13 @@
                     data: {username: user, password: psw},
                     success: function(response){
                         if(response == "200"){
-                            window.location.href = "elencoFilm.html";
+                            window.location.href = "elencoFilmUtenti.html";
                         }
                         else if(response == "404"){
                             alert("Utente non trovato");
+                        }
+                        else if(response == "admin"){
+                            window.location.href = "elencoFilmAdmin.html";
                         }
                         else{
                             alert("Errore nel server");

@@ -23,10 +23,18 @@
 
         $result = $mysqli->query("SELECT * FROM utente WHERE username = '$user' AND password = '$psw'");
 
-        if($result->fetch_assoc() != null){
+        if(($row = $result->fetch_assoc()) != null){
             //utente autenticato
-            echo "200";
+
             $_SESSION["username"] = $user;
+
+            if($row["amministratore"] == 1){
+                $_SESSION["admin"] = true;
+                echo "admin";
+                exit();
+            }
+
+            echo "200";
         }
         else{
             //utente non trovato

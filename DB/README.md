@@ -11,7 +11,6 @@
 ### film
 - ID : int AUTO_INCREMENTE
 - titolo : varchar(32)
-- genere : varchar(16)
 - durata : int
 - locandina : blob
 - PRIMARY KEY (ID)
