@@ -5,9 +5,38 @@
         <script>
             $("document").ready(function(){
                 aggiornaFilm();
+
+                $("#btn-genere").click(function(){
+
+                    let gen = $("#genere").val();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "../PHP/getGenereFilm.php",
+                        data: {genere: gen},
+                        success: function(response){
+                            $("#listaFilm").empty();
+
+                            if(response != "301"){
+                                for (let i = 0; i < response.length; i++){
+                                    addFilm(response[i]["locandina"], response[i]["titolo"], response[i]["ID"]);
+                                }  
+                            }
+                            else{
+                                alert("nessun film trovato con quel genere");
+                            }
+                        }
+                    });
+                });
+
+                $("#reset").click(function(){
+                    aggiornaFilm();
+                    $("#genere").val("");
+                });
             });
 
             function aggiornaFilm(){
+                $("#listaFilm").empty();
                 $.get("../PHP/elencoFilm.php",{}, function(data){
                     for (let i = 0; i < data.length; i++){
                         addFilm(data[i]["locandina"], data[i]["titolo"], data[i]["ID"]);
@@ -36,6 +65,9 @@
         </script>
     </head>
     <body>
+        <input type="text" id="genere">
+        <button id="btn-genere">Cerca per genere</button>
+        <button id="reset">Resetta filtri</button>
         <table id="listaFilm">
         </table>
     </body>
