@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../CSS/style_elencoFilm.css">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script>
+            $("document").ready(function(){
+                aggiornaFilm();
+            });
+
+            function aggiornaFilm(){
+                $.get("../PHP/elencoFilm.php",{}, function(data){
+                    for (let i = 0; i < data.length; i++){
+                        addFilm(data[i]["locandina"], data[i]["titolo"], data[i]["ID"]);
+                    }
+                });
+            }
+
+            function addFilm(img, titolo, id){
+                let imgDOM = $("<img src='data:image/png;base64," + img + "'></img>");
+                let linkDOM = $("<a href='../PHP/schedaFilm.php?id=" + id + "'></a>");
+                let spanDOM = $("<span>" + titolo + "</span>");
+
+                let riga = $("<tr></tr>");
+                let cella = $("<td></td>");
+
+                linkDOM.append(spanDOM);
+
+                cella.append(imgDOM);
+                cella.append("<br>");
+                cella.append(linkDOM);
+
+                riga.append(cella);
+
+                $("#listaFilm").append(riga);
+            }
+        </script>
+    </head>
+    <body>
+        <table id="listaFilm">
+        </table>
+    </body>
+</html>
