@@ -4,6 +4,30 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script>
             $("document").ready(function(){
+                $("#all").hide();
+                controllaAutenticato();
+            });
+
+            function controllaAutenticato(){
+                let info = "check";
+                $.ajax({
+                    type: "POST",
+                    url: "../PHP/checkLoggato.php",
+                    data: {info: info},
+                    success: function(response){
+                        if(response == "200"){
+                            visualizzaTutto();
+                        }
+                        else{
+                            alert("non hai l'autorizzazione");
+                        }
+                    }
+                });
+
+            }
+
+            function visualizzaTutto(){
+                $("#all").show();
                 aggiornaFilm();
 
                 $("#btn-genere").click(function(){
@@ -33,7 +57,28 @@
                     aggiornaFilm();
                     $("#genere").val("");
                 });
-            });
+
+                $("#logout").click(function(){
+
+                    let info = "logout";
+
+                    $.ajax({
+                        type: "POST",
+                        url: "../PHP/logout.php",
+                        data: {info: info},
+                        success: function(response){
+                                
+                            if(response == "200"){
+                                alert("logout effettuata con successo");
+                                window.location.href = "login.html";
+                            }
+                            else{
+                                alert("errore con la logout");
+                            }
+                        }
+                    });
+                });
+            }
 
             function aggiornaFilm(){
                 $("#listaFilm").empty();
@@ -71,7 +116,6 @@
                 linkDOM1.on("click", function(){
                     if(confirm("Vuoi eliminare questo film?")){
                         
-                        //chiamata AJAX
                         $.ajax({
                             type: "POST",
                             url: "../PHP/eliminaFilm.php",
@@ -95,10 +139,13 @@
         </script>
     </head>
     <body>
-        <input type="text" id="genere">
-        <button id="btn-genere">Cerca per genere</button>
-        <button id="reset">Resetta filtri</button>
-        <table id="listaFilm">
-        </table>
+        <div id="all">
+            <input type="text" id="genere">
+            <button id="btn-genere">Cerca per genere</button>
+            <button id="reset">Resetta filtri</button>
+            <table id="listaFilm">
+            </table>
+            <button id="logout">logout</button>
+        </div>
     </body>
 </html>
