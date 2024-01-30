@@ -9,11 +9,9 @@
             });
 
             function controllaAutenticato(){
-                let info = "check";
                 $.ajax({
                     type: "POST",
                     url: "../PHP/checkLoggato.php",
-                    data: {info: info},
                     success: function(response){
                         if(response == "200"){
                             visualizzaTutto();

@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script>
+            $("document").ready(function(){
+                $("#all").hide();
+                controllaAutenticato();
+                
+ 
+            });
+
+            function controllaAutenticato(){
+                $.ajax({
+                    type: "POST",
+                    url: "../PHP/checkLoggato.php",
+                    success: function(response){
+                        if(response == "admin"){
+                            visualizzaTutto();
+                        }
+                        else{
+                            alert("non hai l'autorizzazione");
+                        }
+                    }
+                });
+            }
+
+            function visualizzaTutto(){
+                $("#all").show();
+
+
+                $("#btn").click(function(){
+                var oFReader = new FileReader();
+                oFReader.readAsDataURL(document.getElementById("immagine").files[0]);
+
+                let img = ""
+                let titolo = $("#titolo").val();
+                let durata = $("#durata").val();
+
+                oFReader.onload = function (oFREvent) {
+                    img = oFREvent.target.result;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "../PHP/inserisciFilm.php",
+                        data: {titolo: titolo, durata: durata, immagine: img},
+                        success: function(response){
+                            if(response == "200"){
+                                alert("bravo");
+                            }
+                            else{
+                                alert("no");
+                            }
+                        }
+                    });
+                };
+                });
+            }
+        
+        
+        
+        </script>
+    </head>
+    <body>
+        <div id="all">
+            aggiungi un film<br>
+            titolo: <input type="text" id="titolo">
+            durata: <input type="text" id="durata">
+            locandina: <input type="file" id="immagine">
+            <button id="btn">bottone</button>
+        </div>
+    </body>
+</html>

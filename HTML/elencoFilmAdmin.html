@@ -9,13 +9,11 @@
             });
 
             function controllaAutenticato(){
-                let info = "check";
                 $.ajax({
                     type: "POST",
                     url: "../PHP/checkLoggato.php",
-                    data: {info: info},
                     success: function(response){
-                        if(response == "200"){
+                        if(response == "admin"){
                             visualizzaTutto();
                         }
                         else{
@@ -146,6 +144,7 @@
             <table id="listaFilm">
             </table>
             <button id="logout">logout</button>
+            <a href="inserisciFilm.html">Inserisci un film</a>
         </div>
     </body>
 </html>

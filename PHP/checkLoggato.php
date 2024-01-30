@@ -4,13 +4,11 @@
     }
 
     if(isset($_SESSION["username"])){
-        if($_POST["info"] == "check"){
-            echo "200";
-            exit();
+        if(isset($_SESSION["admin"])){
+            echo "admin";
         }
         else{
-            echo "username si ma altro no";
-            exit();
+            echo "200";
         }
     }
     else{
