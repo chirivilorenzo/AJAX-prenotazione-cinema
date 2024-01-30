@@ -49,7 +49,11 @@
 
                     $gen = implode(", ", $generi);
 
-                    echo "<td><img src='data:image/png;base64,". $img . "'/></td>";
+                    $imgInfo = getimagesizefromstring($img);
+                    $imgType = $imgInfo['mime'];
+                    $imgSrc = "data:$imgType;base64," . $img;
+
+                    echo "<td><img src='$imgSrc'/></td>";
                     echo "<td>" . $titolo . "</td>";
                     echo "<td>" . $gen . "</td>";
                     echo "<td>" . $durata . "</td>";

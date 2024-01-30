@@ -5,8 +5,6 @@
             $("document").ready(function(){
                 $("#all").hide();
                 controllaAutenticato();
-                
- 
             });
 
             function controllaAutenticato(){
@@ -27,37 +25,39 @@
             function visualizzaTutto(){
                 $("#all").show();
 
+                $("#btn").click(function () {
+                    let formData = new FormData();
 
-                $("#btn").click(function(){
-                var oFReader = new FileReader();
-                oFReader.readAsDataURL(document.getElementById("immagine").files[0]);
+                    formData.append("titolo", $("#titolo").val());
+                    formData.append("durata", $("#durata").val());
+                    
+                    let immagineInput = $("#immagine")[0].files[0];
 
-                let img = ""
-                let titolo = $("#titolo").val();
-                let durata = $("#durata").val();
+                    if (immagineInput) {
+                        formData.append("immagine", immagineInput);
 
-                oFReader.onload = function (oFREvent) {
-                    img = oFREvent.target.result;
-
-                    $.ajax({
-                        type: "POST",
-                        url: "../PHP/inserisciFilm.php",
-                        data: {titolo: titolo, durata: durata, immagine: img},
-                        success: function(response){
-                            if(response == "200"){
-                                alert("bravo");
+                        $.ajax({
+                            type: "POST",
+                            url: "../PHP/inserisciFilm.php",
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response == "200") {
+                                    alert("film aggiunto");
+                                } else {
+                                    alert("errore: film non aggiunto");
+                                }
+                            },
+                            error: function () {
+                                alert("Errore nella richiesta AJAX");
                             }
-                            else{
-                                alert("no");
-                            }
-                        }
-                    });
-                };
+                        });
+                    } else {
+                        alert("Seleziona un'immagine prima di inviare il form.");
+                    }
                 });
             }
-        
-        
-        
         </script>
     </head>
     <body>
