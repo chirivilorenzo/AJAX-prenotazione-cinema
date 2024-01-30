@@ -1,0 +1,95 @@
+soluzioni di chatGPT per inserire più generi per un film nel db
+
+modificare file inserisciFilm.html (aggiungere le checkbox dinamiche con php)
+
+function visualizzaTutto() {
+    $("#all").show();
+
+    $("#btn").click(function () {
+        let formData = new FormData();
+
+        formData.append("titolo", $("#titolo").val());
+        formData.append("durata", $("#durata").val());
+        formData.append("immagine", $("#immagine")[0].files[0]);
+
+        // Aggiungi i generi selezionati all'oggetto FormData
+        $('input[name="generi[]"]:checked').each(function() {
+            formData.append("generi[]", $(this).val());
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "../PHP/inserisciFilm.php",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response == "200") {
+                    alert("Film aggiunto con successo");
+                } else {
+                    alert("Errore: Film non aggiunto");
+                }
+            },
+            error: function () {
+                alert("Errore nella richiesta AJAX");
+            }
+        });
+    });
+}
+
+_______________________________________________________________________________________________________________________________________
+
+modificare il file inserisciFilm.php
+
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "prenotazionecinema";
+
+    $titolo = $_POST["titolo"];
+    $durata = $_POST["durata"];
+    
+    // Ottieni l'immagine dal form e salvala nel server
+    $imgTmpName = $_FILES['immagine']['tmp_name'];
+    $imgContent = file_get_contents($imgTmpName);
+
+    // Ottieni i generi selezionati
+    $generiSelezionati = isset($_POST['generi']) ? $_POST['generi'] : array();
+
+    // Gestisci i generi come desideri (ad esempio, inseriscili nel database)
+
+    $mysqli = new mysqli($servername, $username, $password, $dbname);
+    $mysqli->set_charset('utf8mb4');
+
+    $query = "INSERT INTO film (titolo, durata, locandina) VALUES (?, ?, ?)";
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param('sss', $titolo, $durata, $imgContent);
+
+    if ($stmt->execute()) {
+        // Puoi ottenere l'ID del film appena inserito
+        $ultimoID = $mysqli->insert_id;
+
+        // Inserisci i generi associati al film nell'apposita tabella
+        foreach ($generiSelezionati as $genere) {
+            $queryGenere = "INSERT INTO film_generi (id_film, genere) VALUES (?, ?)";
+            $stmtGenere = $mysqli->prepare($queryGenere);
+            $stmtGenere->bind_param('is', $ultimoID, $genere);
+            $stmtGenere->execute();
+            $stmtGenere->close();
+        }
+
+        echo "200";
+    } else {
+        echo "300";
+    }
+
+    $stmt->close();
+    $mysqli->close();
+}
+?>
