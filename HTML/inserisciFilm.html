@@ -24,51 +24,87 @@
 
             function visualizzaTutto(){
                 $("#all").show();
+                ottieniGeneri();
 
                 $("#btn").click(function () {
+
+                    let titolo = $("#titolo").val();
+                    let durata = $("#durata").val();
+                    let immagine = $("#immagine")[0].files[0];
+
+
                     let formData = new FormData();
+                    formData.append("titolo", titolo);
+                    formData.append("durata", durata);
+                    formData.append("immagine", immagine);
 
-                    formData.append("titolo", $("#titolo").val());
-                    formData.append("durata", $("#durata").val());
-                    
-                    let immagineInput = $("#immagine")[0].files[0];
+                    //per avere l'array con tutte le checkbox
+                    let array = $("input[name=genere]:checked");
+                    let nuovoVett = [];
 
-                    if (immagineInput) {
-                        formData.append("immagine", immagineInput);
+                    //scorrere il vettore
+                    array.each(function(){
+                        nuovoVett.push($(this).val());
+                    });
+
+                    for(let i = 0; i < nuovoVett.length; i++){
+                        formData.append("generi[]", nuovoVett[i]);
+                    }
+
+
+                    if (titolo && durata && immagine) {
 
                         $.ajax({
                             type: "POST",
                             url: "../PHP/inserisciFilm.php",
                             data: formData,
-                            contentType: false,
                             processData: false,
+                            contentType: false,                            
                             success: function (response) {
                                 if (response == "200") {
                                     alert("film aggiunto");
-                                } else {
+                                }
+                                else {
                                     alert("errore: film non aggiunto");
                                 }
-                            },
-                            error: function () {
-                                alert("Errore nella richiesta AJAX");
                             }
                         });
-                    } else {
+                    }
+                    else {
                         alert("Seleziona un'immagine prima di inviare il form.");
                     }
                 });
+            }
+
+            function ottieniGeneri(){
+                $.get("../PHP/getGeneri.php",{}, function(data){
+                    for(let i = 0; i < data.length; i++){
+                        creaCheckbox(data[i]["nome"]);
+                    }
+                });
+            }
+
+            function creaCheckbox(nomeGenere){
+                let checkboxDOM = $("<input type='checkbox' name='genere' value='" + nomeGenere + "'>");
+                let labelDOM = $("<label for='" + nomeGenere + "'>" + nomeGenere + "</label><br>");
+
+                $("#generi").append(checkboxDOM);
+                $("#generi").append(labelDOM);
             }
         </script>
     </head>
     <body>
         <div id="all">
             aggiungi un film<br>
-            titolo: <input type="text" id="titolo">
-            durata: <input type="text" id="durata">
+            titolo: <input type="text" id="titolo"><br>
+            durata: <input type="text" id="durata"><br>
             locandina: <input type="file" id="immagine"><br>
             generi:
-            
-            <button id="btn">Aggiuni</button><br><br>
+            <div id="generi">
+                
+            </div>
+            <br>
+            <button id="btn">Aggiungi</button><br><br>
             <a href="elencoFilmAdmin.html">Indietro</a>
         </div>
     </body>
