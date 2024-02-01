@@ -22,12 +22,17 @@
         $mysqli = new mysqli($servername, $username, $password, $dbname);
         $mysqli->set_charset('utf8mb4');
 
-        $mysqli->query("DELETE FROM film WHERE ID='$idFilm'");
-        echo $mysqli->error;
-        if($mysqli->affected_rows > 0){
+        $query = "DELETE FROM film WHERE ID=?";
+        $stmt = $mysqli->prepare($query);
+
+        $stmt->bind_param("i", $idFilm);
+        if($stmt->execute()){
             echo "200";
         }
         else{
             echo "404";
         }
+
+        $stmt->close();
+        $mysqli->close();
     }
