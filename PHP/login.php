@@ -8,7 +8,7 @@
         
         //controllare se l'utente è registrato nel db
         $user = $_POST["username"];
-        $psw = $_POST["password"];
+        $psw = md5($_POST["password"]);
 
 
         //mi collego al db e cerco l'utente

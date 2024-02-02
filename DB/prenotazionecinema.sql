@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 26, 2024 alle 20:23
--- Versione del server: 10.4.28-MariaDB
--- Versione PHP: 8.0.28
+-- Creato il: Feb 02, 2024 alle 08:28
+-- Versione del server: 10.4.32-MariaDB
+-- Versione PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -50,6 +50,7 @@ INSERT INTO `film` (`ID`, `titolo`, `durata`, `locandina`) VALUES
 --
 
 CREATE TABLE `film-genere` (
+  `ID` int(11) NOT NULL,
   `idFilm` int(11) NOT NULL,
   `idGenere` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -58,10 +59,10 @@ CREATE TABLE `film-genere` (
 -- Dump dei dati per la tabella `film-genere`
 --
 
-INSERT INTO `film-genere` (`idFilm`, `idGenere`) VALUES
-(1, 1),
-(2, 2),
-(3, 3);
+INSERT INTO `film-genere` (`ID`, `idFilm`, `idGenere`) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -118,6 +119,7 @@ ALTER TABLE `film`
 -- Indici per le tabelle `film-genere`
 --
 ALTER TABLE `film-genere`
+  ADD PRIMARY KEY (`ID`),
   ADD KEY `idFilm` (`idFilm`,`idGenere`),
   ADD KEY `idGenere` (`idGenere`);
 
@@ -142,6 +144,12 @@ ALTER TABLE `utente`
 -- AUTO_INCREMENT per la tabella `film`
 --
 ALTER TABLE `film`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT per la tabella `film-genere`
+--
+ALTER TABLE `film-genere`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
