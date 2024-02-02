@@ -1,0 +1,35 @@
+per prendere un'immagine da locale
+
+JAVASCRIPT
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btn').addEventListener('click', function() {  
+        let fileInput = document.getElementById("immagine");
+
+        if (fileInput.files && fileInput.files[0]) {
+
+            let file = fileInput.files[0];
+
+            // Salva solo il percorso dell'immagine nel database
+            let percorsoImmagine = "../IMAGES/" + file.name;
+
+            // Puoi ora utilizzare il percorsoImmagine per salvare nel database
+            alert("Percorso dell'immagine: " + percorsoImmagine);
+
+
+
+            // let scriptLocation = document.currentScript.src;
+
+            // let percorsoImmagine = scriptLocation.replace('pagina.html', 'IMAGES/' + file.name);
+
+            
+            let img = $("<img src='" + percorsoImmagine + "'>");
+            $("#gg").append(img);
+        }
+    });
+});
+
+
+HTML
+file: <input type="file" id="immagine">
+<button id="btn">Aggiungi Film</button>
+<div id="gg"></div>

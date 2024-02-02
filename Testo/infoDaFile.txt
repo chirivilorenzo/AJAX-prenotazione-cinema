@@ -1,0 +1,27 @@
+per prendere il contenuto di un file.text
+
+var pathToFile = '../CONFIGURAZIONE/file.txt';
+
+// Esegui una richiesta AJAX con $.ajax()
+$.ajax({
+    url: pathToFile,
+    type: 'GET',
+    dataType: 'text', // Tipo di dati che ci si aspetta dalla risposta
+    success: function(data) {
+        // Funzione di callback per il successo
+        alert('Contenuto di file.txt: ' + data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        // Funzione di callback per errori
+        console.error('Errore nella richiesta:', textStatus, errorThrown);
+    }
+});
+
+struttura directory
+- TEST
+    - CONFIGURAZIONE
+        - file.txt
+    - HTML
+        - pagina.html
+    - IMAGES
+        - placeholder.png
