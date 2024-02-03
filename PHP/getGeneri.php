@@ -9,10 +9,12 @@
     if($_SERVER["REQUEST_METHOD"] === "GET"){
         
         //mi collego al db e cerco l'utente
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "prenotazionecinema";
+        $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
+
+        $servername = $config["database"]["servername"];
+        $username = $config["database"]["username"];
+        $password = $config["database"]["password"];
+        $dbname = $config["database"]["dbname"];
 
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 

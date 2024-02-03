@@ -4,10 +4,12 @@
     $idFilm = $_GET["id"];
 
     //cerco nel db il film con quell'id e visualizzo tutte le sue info
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "prenotazionecinema";
+    $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
+
+    $servername = $config["database"]["servername"];
+    $username = $config["database"]["username"];
+    $password = $config["database"]["password"];
+    $dbname = $config["database"]["dbname"];
 
 
     $mysqli = new mysqli($servername, $username, $password, $dbname);

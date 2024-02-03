@@ -1,38 +1,31 @@
 <?php
 
-    if(isset($_SESSION)){
-        session_start();
-    }
-
-    if(isset($_SESSION["admin"])){
-        echo "accesso negato";
-        exit();
-    }
-
     if($_SERVER["REQUEST_METHOD"] === "POST"){
-        $idFilm = $_POST["id"];
-
-        //collegamento al db per eliminare quel film (se esiste)
         $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
 
         $servername = $config["database"]["servername"];
         $username = $config["database"]["username"];
         $password = $config["database"]["password"];
         $dbname = $config["database"]["dbname"];
-
+        
 
         $mysqli = new mysqli($servername, $username, $password, $dbname);
         $mysqli->set_charset('utf8mb4');
 
-        $query = "DELETE FROM film WHERE ID=?";
-        $stmt = $mysqli->prepare($query);
+        $user = $_POST["username"];
+        $psw = md5($_POST["password"]);
+        $email = $_POST["email"];
 
-        $stmt->bind_param("i", $idFilm);
+
+        $query = "INSERT INTO utente (username, password, email) VALUES (?, ?, ?)";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("sss", $user, $psw, $email);
+
         if($stmt->execute()){
             echo "200";
         }
         else{
-            echo "404";
+            echo "301";
         }
 
         $stmt->close();

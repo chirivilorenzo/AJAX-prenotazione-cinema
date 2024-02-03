@@ -3,10 +3,12 @@
     header('Content-Type: application/json');
 
     // Sostituisci i segnaposto con le tue informazioni sul database
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "prenotazionecinema";
+    $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
+
+    $servername = $config["database"]["servername"];
+    $username = $config["database"]["username"];
+    $password = $config["database"]["password"];
+    $dbname = $config["database"]["dbname"];
 
     $genere = $_POST["genere"];
 

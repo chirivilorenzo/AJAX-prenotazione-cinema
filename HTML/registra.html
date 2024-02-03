@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script>
+            $("document").ready(function(){
+                $("#login").click(function(){
+                    registraUtente();
+                });
+            });
+
+            function registraUtente(){
+
+                let user = $("#username").val();
+                let psw = $("#password").val();
+                let email = $("#email").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "../PHP/registra.php",
+                    data: {username: user, password: psw, email: email},
+                    success: function(response){
+                        if(response == "200"){
+                            alert("registrazione avvenuta con successo");
+                            inviaMail(user);
+                        }
+                        else if(response == "301"){
+                            alert("Errore nella registrazione");
+                        }
+                        else{
+                            alert("Errore nel server");
+                        }
+                    }
+                });
+                return;
+            }
+
+            function inviaMail(user){
+
+                $.ajax({
+                    type: "POST",
+                    url: "../PHP/inviaMail.php",
+                    data: {username: user},
+                    success: function(response){
+                        if(response == "200"){
+                            alert("email di benvenuto inviata");
+                            window.location.href = "login.html";
+                        }
+                        else if(response == "404"){
+                            alert("utente non trovato nel db");
+                        }
+                        else{
+                            alert("errore nell'invio della mail di benvenuto");
+                        }
+                    }
+                })
+            }
+        </script>
+    </head>
+    <body>
+        Registra<br>
+        username: <input id="username" type="text"><br>
+        password: <input id="password" type="password"><br>
+        email: <input id="email" type="text"><br>
+        <button id="login">Login</button><br>
+    </body>
+</html>

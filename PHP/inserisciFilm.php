@@ -9,10 +9,12 @@
         $flag = 0;  //serve per capire se il server ha inserito sia il film che i suoi generi
         $lastID = 0;
 
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "prenotazionecinema";
+        $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
+
+        $servername = $config["database"]["servername"];
+        $username = $config["database"]["username"];
+        $password = $config["database"]["password"];
+        $dbname = $config["database"]["dbname"];
 
         
         $mysqli = new mysqli($servername, $username, $password, $dbname);
