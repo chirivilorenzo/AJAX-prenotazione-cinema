@@ -89,7 +89,7 @@
             }
 
             function addFilm(img, titolo, id){
-                let imgDOM = $("<img src='data:image/png;base64," + img + "'></img>");
+                let imgDOM = $("<img src='../IMAGES/" + img + "'></img>");
                 let linkDOM = $("<a href='../PHP/schedaFilm.php?id=" + id + "'></a>");
                 let spanDOM = $("<span>" + titolo + "</span>");
 

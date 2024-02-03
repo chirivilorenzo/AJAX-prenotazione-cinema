@@ -22,7 +22,7 @@
         $titolo = $_POST["titolo"];
         $durata = $_POST["durata"];
         $generi = $_POST["generi"];
-        $immagine = file_get_contents($_FILES["immagine"]["tmp_name"]);
+        $immagine = $_POST["immagine"];
 
 
         

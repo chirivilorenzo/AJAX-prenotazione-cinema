@@ -26,52 +26,61 @@
                 $("#all").show();
                 ottieniGeneri();
 
-                $("#btn").click(function () {
 
-                    let titolo = $("#titolo").val();
-                    let durata = $("#durata").val();
-                    let immagine = $("#immagine")[0].files[0];
+                document.getElementById('btn').addEventListener('click', function() {  
+                    let fileInput = document.getElementById("immagine");
 
+                    if (fileInput.files && fileInput.files[0]) {
+                        let file = fileInput.files[0];
 
-                    let formData = new FormData();
-                    formData.append("titolo", titolo);
-                    formData.append("durata", durata);
-                    formData.append("immagine", immagine);
+                        // Salva solo il percorso dell'immagine nel database
+                        let nomeImmagine = file.name;
 
-                    //per avere l'array con tutte le checkbox
-                    let array = $("input[name=genere]:checked");
-                    let nuovoVett = [];
-
-                    //scorrere il vettore
-                    array.each(function(){
-                        nuovoVett.push($(this).val());
-                    });
-
-                    for(let i = 0; i < nuovoVett.length; i++){
-                        formData.append("generi[]", nuovoVett[i]);
-                    }
+                        let titolo = $("#titolo").val();
+                        let durata = $("#durata").val();
 
 
-                    if (titolo && durata && immagine) {
+                        let formData = new FormData();
+                        formData.append("titolo", titolo);
+                        formData.append("durata", durata);
+                        formData.append("immagine", nomeImmagine);
 
-                        $.ajax({
-                            type: "POST",
-                            url: "../PHP/inserisciFilm.php",
-                            data: formData,
-                            processData: false,
-                            contentType: false,                            
-                            success: function (response) {
-                                if (response == "200") {
-                                    alert("film aggiunto");
-                                }
-                                else {
-                                    alert("errore: film non aggiunto");
-                                }
-                            }
+                        //per avere l'array con tutte le checkbox
+                        let array = $("input[name=genere]:checked");
+                        let nuovoVett = [];
+
+                        //scorrere il vettore
+                        array.each(function(){
+                            nuovoVett.push($(this).val());
                         });
-                    }
-                    else {
-                        alert("Seleziona un'immagine prima di inviare il form.");
+
+                        for(let i = 0; i < nuovoVett.length; i++){
+                            formData.append("generi[]", nuovoVett[i]);
+                        }
+
+
+                        if (titolo && durata && immagine) {
+
+                            $.ajax({
+                                type: "POST",
+                                url: "../PHP/inserisciFilm.php",
+                                data: formData,
+                                processData: false,
+                                contentType: false,                            
+                                success: function (response) {
+                                    if (response == "200") {
+                                        alert("film aggiunto");
+                                        window.location.href="elencoFilmAdmin.html";
+                                    }
+                                    else {
+                                        alert("errore: film non aggiunto");
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            alert("Seleziona un'immagine prima di inviare il form.");
+                        }
                     }
                 });
             }

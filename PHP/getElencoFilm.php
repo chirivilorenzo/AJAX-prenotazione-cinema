@@ -16,7 +16,6 @@
 
     $film = array();
     while(($row = $result->fetch_assoc()) != null){
-        $row["locandina"] = base64_encode($row['locandina']);
         $film[] = $row;
     }
 

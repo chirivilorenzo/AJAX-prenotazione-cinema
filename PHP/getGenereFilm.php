@@ -29,7 +29,6 @@
 
     if($result->num_rows > 0){
         while(($row = $result->fetch_assoc()) != null){
-            $row["locandina"] = base64_encode($row['locandina']);
             $film[] = $row;
         }
 

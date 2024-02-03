@@ -42,18 +42,14 @@
                     while(($row = $result->fetch_assoc()) != null){
                         $titolo = $row["titolo"];
                         $durata = $row["durata"];
-                        $img = base64_encode($row["locandina"]);
+                        $img = $row["locandina"];
 
                         $generi[] = $row["nome_genere"];
                     }
 
                     $gen = implode(", ", $generi);
 
-                    $imgInfo = getimagesizefromstring($img);
-                    $imgType = $imgInfo['mime'];
-                    $imgSrc = "data:$imgType;base64," . $img;
-
-                    echo "<td><img src='$imgSrc'/></td>";
+                    echo "<td><img src='../IMAGES/$img'/></td>";
                     echo "<td>" . $titolo . "</td>";
                     echo "<td>" . $gen . "</td>";
                     echo "<td>" . $durata . "</td>";
