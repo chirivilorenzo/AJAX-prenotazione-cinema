@@ -18,7 +18,7 @@
         $user = $_POST["username"];
         $destinatario = "";
 
-        $query = "SELECT email from utente WHERE username = '$user'";
+        $query = "SELECT email FROM utente WHERE username = '$user'";
         $result = $mysqli->query($query);
 
         if($result === false){

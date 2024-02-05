@@ -19,7 +19,13 @@
                     data: {username: user, password: psw},
                     success: function(response){
                         if(response == "200"){
-                            window.location.href = "elencoFilmUtenti.html";
+                            if(confirm("Vuoi abilitare l'autenticazione a 2 fattori?")){
+                                //aggiunge nel db il flag = 1 per l'utente
+                                abilita2FA(user);
+                            }
+                            else{
+                                window.location.href = "elencoFilmUtenti.html";
+                            }
                         }
                         else if(response == "404"){
                             alert("Utente non trovato");
@@ -33,6 +39,26 @@
                     }
                 });
                 return;
+            }
+
+            function abilita2FA(user){
+                $.ajax({
+                    type: "POST",
+                    url: "../PHP/gestione2FA.php",
+                    data: {operazione: "abilita", username: user},
+                    success: function(response){
+                        if(response == "200"){
+                            alert("2FA attivata su questo account");
+                            window.location.href = "elencoFilmUtenti.html";
+                        }
+                        else if(response == "404"){
+                            alert("utente non trovato nel db");
+                        }
+                        else if(response == "300"){
+                            alert("errore nell'attivare la 2FA")
+                        }
+                    }
+                });
             }
         </script>
     </head>

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Feb 03, 2024 alle 11:15
--- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Creato il: Feb 05, 2024 alle 20:58
+-- Versione del server: 10.4.28-MariaDB
+-- Versione PHP: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -94,16 +94,18 @@ CREATE TABLE `utente` (
   `ID` int(11) NOT NULL,
   `username` varchar(16) NOT NULL,
   `password` varchar(32) NOT NULL,
-  `amministratore` int(11) NOT NULL DEFAULT 0
+  `email` varchar(64) NOT NULL,
+  `amministratore` int(11) NOT NULL DEFAULT 0,
+  `2FA` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dump dei dati per la tabella `utente`
 --
 
-INSERT INTO `utente` (`ID`, `username`, `password`, `amministratore`) VALUES
-(1, 'mario', '2bf65275cb7f5dc95febd7d46cd7d0af', 0),
-(2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1);
+INSERT INTO `utente` (`ID`, `username`, `password`, `email`, `amministratore`, `2FA`) VALUES
+(1, 'mario', '2bf65275cb7f5dc95febd7d46cd7d0af', 'emailpersitinutili@gmail.com', 0, 0),
+(2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@adminmail.com', 1, 0);
 
 --
 -- Indici per le tabelle scaricate
@@ -134,7 +136,8 @@ ALTER TABLE `genere`
 --
 ALTER TABLE `utente`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
@@ -162,7 +165,7 @@ ALTER TABLE `genere`
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Limiti per le tabelle scaricate
