@@ -35,8 +35,11 @@
                 echo "admin";
                 exit();
             }
-
-            echo "200";
+            else if($row["2FA"] == 0){
+                echo "201"; //ritorna se non ha il 2fa attivato
+                exit();
+            }
+            echo "200"; //ritorna se ha il 2fa attivato
         }
         else{
             //utente non trovato

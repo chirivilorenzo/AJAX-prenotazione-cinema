@@ -18,7 +18,7 @@
                     url: "../PHP/login.php",
                     data: {username: user, password: psw},
                     success: function(response){
-                        if(response == "200"){
+                        if(response == "201"){  //utente non ha abilitato il 2fa
                             if(confirm("Vuoi abilitare l'autenticazione a 2 fattori?")){
                                 //aggiunge nel db il flag = 1 per l'utente
                                 abilita2FA(user);
@@ -26,6 +26,9 @@
                             else{
                                 window.location.href = "elencoFilmUtenti.html";
                             }
+                        }
+                        else if(response == "200"){
+                            window.location.href = "elencoFilmUtenti.html";
                         }
                         else if(response == "404"){
                             alert("Utente non trovato");
