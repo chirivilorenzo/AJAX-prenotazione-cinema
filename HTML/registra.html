@@ -21,7 +21,7 @@
                     success: function(response){
                         if(response == "200"){
                             alert("registrazione avvenuta con successo");
-                            inviaMail(user);
+                            inviaMail(email);
                         }
                         else if(response == "301"){
                             alert("Errore nella registrazione");
@@ -34,12 +34,12 @@
                 return;
             }
 
-            function inviaMail(user){
+            function inviaMail(email){
 
                 $.ajax({
                     type: "POST",
                     url: "../PHP/inviaMail.php",
-                    data: {username: user},
+                    data: {indirizzo: email, operazione: "attivazione"},
                     success: function(response){
                         if(response == "200"){
                             alert("email di benvenuto inviata");

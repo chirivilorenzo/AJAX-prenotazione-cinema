@@ -26,7 +26,7 @@
         $result = $mysqli->query("SELECT * FROM utente WHERE username = '$user' AND password = '$psw'");
 
         if(($row = $result->fetch_assoc()) != null){
-            if($row["codiceRegistrazione"] != null){
+            if($row["codiceRegistrazione"] != "0"){
                 echo "301"; //l'utente è nel db ma non ha attivato il suo account dalla mail
             }
             else{
