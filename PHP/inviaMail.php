@@ -18,6 +18,7 @@
         $user = $_POST["username"];
         $destinatario = "";
 
+        //cerca nel db la mail dell'utente
         $query = "SELECT email FROM utente WHERE username = '$user'";
         $result = $mysqli->query($query);
 
@@ -36,14 +37,29 @@
         }
 
 
+        $operazione = $_POST["operazione"];
 
+        //attiva l'account dell'utente
+        if($operazione == "attivazione"){
+            //codice per generare il codice della registrazione per l'utente
+            //per genereare il codice, fare hash di, esempio, id+username+email e aggiungere qualche carattere in più
+            //sistemare anche il campo nel db per metterlo a lunghezza fissa
+        }
+        else if($operazione == "recupera_psw"){
+            //recupera password dell'utente
+        }
+
+
+
+        //questo codice va tolto e sistemato, perché come è adesso non serve
+        //toglierlo da qui e sistemarlo per fare l'attivazione e, in futuro, la recupera psw
         $username = $config["email"]["username"];
         $password = $config["email"]["password"];
 
         $mittente = $config["email"]["mittente"];
 
         $oggetto = "Benvenuto";
-        $contenuto = "ti sei registrato correttamente";
+        $contenuto = "benvenuto nel sito. Per completare l'iscrizione devi attivare il tuo account da questo link: " . $link;
 
 
         $mail = new PHPMailer\PHPMailer\PHPMailer();
@@ -52,7 +68,7 @@
         //$mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
         $mail->SMTPAuth = true; // authentication enabled
         $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
-        $mail->Host = "smtp.gmail.com";
+        $mail->Host = $config["email"]["host"];
         $mail->Port = 465; // or 587
 
         $mail->IsHTML(true);

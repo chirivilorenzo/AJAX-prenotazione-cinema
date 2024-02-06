@@ -26,20 +26,23 @@
         $result = $mysqli->query("SELECT * FROM utente WHERE username = '$user' AND password = '$psw'");
 
         if(($row = $result->fetch_assoc()) != null){
-            //utente autenticato
-
-            $_SESSION["username"] = $user;
-
-            if($row["amministratore"] == 1){
-                $_SESSION["admin"] = true;
-                echo "admin";
-                exit();
+            if($row["codiceRegistrazione"] != null){
+                echo "301"; //l'utente è nel db ma non ha attivato il suo account dalla mail
             }
-            else if($row["2FA"] == 0){
-                echo "201"; //ritorna se non ha il 2fa attivato
-                exit();
+            else{
+                $_SESSION["username"] = $user;
+
+                if($row["amministratore"] == 1){
+                    $_SESSION["admin"] = true;
+                    echo "admin";
+                    exit();
+                }
+                else if($row["2FA"] == 0){
+                    echo "201"; //ritorna se non ha il 2fa attivato
+                    exit();
+                }
+                echo "200"; //ritorna se ha il 2fa attivato
             }
-            echo "200"; //ritorna se ha il 2fa attivato
         }
         else{
             //utente non trovato
