@@ -34,7 +34,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: "../PHP/getGenereFilm.php",
+                        url: "../PHP/get/getGenereFilm.php",
                         data: {genere: gen},
                         success: function(response){
                             $("#listaFilm").empty();
@@ -81,7 +81,7 @@
 
             function aggiornaFilm(){
                 $("#listaFilm").empty();
-                $.get("../PHP/getElencoFilm.php",{}, function(data){
+                $.get("../PHP/get/getElencoFilm.php",{}, function(data){
                     for (let i = 0; i < data.length; i++){
                         addFilm(data[i]["locandina"], data[i]["titolo"], data[i]["ID"]);
                     }

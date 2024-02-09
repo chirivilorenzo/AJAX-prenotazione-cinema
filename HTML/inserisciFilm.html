@@ -86,7 +86,7 @@
             }
 
             function ottieniGeneri(){
-                $.get("../PHP/getGeneri.php",{}, function(data){
+                $.get("../PHP/get/getGeneri.php",{}, function(data){
                     for(let i = 0; i < data.length; i++){
                         creaCheckbox(data[i]["nome"]);
                     }
