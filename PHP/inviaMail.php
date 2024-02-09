@@ -1,34 +1,8 @@
 <?php
-    require('../PHPMailer/src/PHPMailer.php');
-    require("../PHPMailer/src/SMTP.php");
-    require("../PHPMailer/src/Exception.php");
 
-    function inviaMail($username, $password, $mittente, $destinatario, $host, $oggetto, $contenuto){
-        $mail = new PHPMailer\PHPMailer\PHPMailer();
-        $mail->IsSMTP(); // enable SMTP
+    include("classi/CMail.php");
 
-        //$mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
-        $mail->SMTPAuth = true; // authentication enabled
-        $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
-        $mail->Host = $host;
-        $mail->Port = 465; // or 587
 
-        $mail->IsHTML(true);
-        $mail->Username = $username;
-        $mail->Password = $password;
-
-        $mail->SetFrom($mittente);
-        $mail->Subject = $oggetto;
-        $mail->Body = $contenuto;
-        $mail->AddAddress($destinatario);
-
-        if($mail->Send()) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
 
     if($_SERVER["REQUEST_METHOD"] === "POST"){
 
@@ -41,12 +15,8 @@
         $dbname = $config["database"]["dbname"];
 
         //cose per la mail
-        $username = $config["email"]["username"];
-        $password = $config["email"]["password"];
-        $mittente = $config["email"]["mittente"];
-        $host = $config["email"]["host"];
-
-        $destinatario = $_POST["indirizzo"];
+        $mail = new CMail();
+        $destinatario = $_POST["indirizzo"];    
 
         //mi collego al db
         $mysqli = new mysqli($servername, $usernamedb, $passworddb, $dbname);
@@ -85,10 +55,14 @@
                     $oggetto = "Benvenuto";
                     $contenuto = "benvenuto nel sito. Per completare l'iscrizione devi attivare il tuo account da questo link: " . $link;
 
+                    $mail->ottieniInfo($destinatario, $oggetto, $contenuto);
+
                     //invia la mail
-                    if(inviaMail($username, $password, $mittente, $destinatario, $host, $oggetto, $contenuto)){
+                    if($mail->inviaMail()){
                         echo "200";
-                        exit();
+                    }
+                    else{
+                        echo "300";
                     }
                 }
                 else{

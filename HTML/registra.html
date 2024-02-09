@@ -45,6 +45,9 @@
                             alert("email di benvenuto inviata");
                             window.location.href = "login.html";
                         }
+                        else if(response == "300"){
+                            alert("errore nell'invio della mail");
+                        }
                         else if(response == "404"){
                             alert("utente non trovato nel db");
                         }
