@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Feb 05, 2024 alle 20:58
--- Versione del server: 10.4.28-MariaDB
--- Versione PHP: 8.0.28
+-- Creato il: Feb 09, 2024 alle 09:10
+-- Versione del server: 10.4.32-MariaDB
+-- Versione PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -96,16 +96,18 @@ CREATE TABLE `utente` (
   `password` varchar(32) NOT NULL,
   `email` varchar(64) NOT NULL,
   `amministratore` int(11) NOT NULL DEFAULT 0,
-  `2FA` int(11) NOT NULL DEFAULT 0
+  `2FA` int(11) NOT NULL DEFAULT 0,
+  `codiceRegistrazione` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dump dei dati per la tabella `utente`
 --
 
-INSERT INTO `utente` (`ID`, `username`, `password`, `email`, `amministratore`, `2FA`) VALUES
-(1, 'mario', '2bf65275cb7f5dc95febd7d46cd7d0af', 'emailpersitinutili@gmail.com', 0, 0),
-(2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@adminmail.com', 1, 0);
+INSERT INTO `utente` (`ID`, `username`, `password`, `email`, `amministratore`, `2FA`, `codiceRegistrazione`) VALUES
+(1, 'mario', '2bf65275cb7f5dc95febd7d46cd7d0af', 'no', 0, 0, 'd41d8cd98f00b204e9800998ecf8427e'),
+(2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@adminmail.com', 1, 0, 'd41d8cd98f00b204e9800998ecf8427e'),
+(27, 'gianlucaTorre', '7bb483729b5a8e26f73e1831cde5b842', 'emailpersitinutili@gmail.com', 0, 0, '0');
 
 --
 -- Indici per le tabelle scaricate
@@ -165,7 +167,7 @@ ALTER TABLE `genere`
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Limiti per le tabelle scaricate
