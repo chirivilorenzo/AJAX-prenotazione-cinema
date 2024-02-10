@@ -9,7 +9,7 @@
     if($_SERVER["REQUEST_METHOD"] === "GET"){
         
         //mi collego al db e cerco l'utente
-        $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
+        $config = parse_ini_file("../../CONFIGURAZIONE/config.ini", true);
 
         $servername = $config["database"]["servername"];
         $username = $config["database"]["username"];

@@ -1,27 +1,20 @@
 <?php
 
     include("classi/CMail.php");
-
+    include("classi/CDatabase.php");
 
 
     if($_SERVER["REQUEST_METHOD"] === "POST"){
-
-        $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
-
-        //cose per il db
-        $servername = $config["database"]["servername"];
-        $usernamedb = $config["database"]["username"];
-        $passworddb = $config["database"]["password"];
-        $dbname = $config["database"]["dbname"];
 
         //cose per la mail
         $mail = new CMail();
         $destinatario = $_POST["indirizzo"];    
 
         //mi collego al db
-        $mysqli = new mysqli($servername, $usernamedb, $passworddb, $dbname);
-        $mysqli->set_charset("utf8mb4");
+        $classeDB = new CDatabase();
+        $classeDB->connessione();
 
+        
         $operazione = $_POST["operazione"];
         if($operazione == "attivazione"){
             //codice per generare il codice della registrazione per l'utente

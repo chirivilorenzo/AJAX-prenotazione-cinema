@@ -3,7 +3,7 @@
     header('Content-Type: application/json');
 
     // Sostituisci i segnaposto con le tue informazioni sul database
-    $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
+    $config = parse_ini_file("../../CONFIGURAZIONE/config.ini", true);
 
     $servername = $config["database"]["servername"];
     $username = $config["database"]["username"];
