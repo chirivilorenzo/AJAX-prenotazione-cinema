@@ -45,13 +45,13 @@
             foreach ($generi as $genereNome){
                 $query = "SELECT ID FROM genere WHERE nome=?";
                 $tipo = "s";
-                $elemento = $classeDB->seleziona($query, $tipo, "ID", $genereNome);
+                $elemento = $classeDB->seleziona($query, $tipo, $genereNome);
 
                 if($elemento == "errore"){
                     echo "errore";
                 }
                 else{
-                    $nuovoArray[] = $elemento;
+                    $nuovoArray[] = $elemento["ID"];
                 }
             }
 

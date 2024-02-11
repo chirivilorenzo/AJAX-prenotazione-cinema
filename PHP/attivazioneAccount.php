@@ -1,14 +1,11 @@
 <?php
 
+    include("classi/CDatabase.php");
+
     if($_SERVER["REQUEST_METHOD"] === "GET"){
 
-        $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
-
-        //cose per il db
-        $servername = $config["database"]["servername"];
-        $usernamedb = $config["database"]["username"];
-        $passworddb = $config["database"]["password"];
-        $dbname = $config["database"]["dbname"];
+        $classeDB = new CDatabase();
+        $classeDB->connessione();
 
         //prendo l'hash dall'url
         $hash = $_GET["id"];
@@ -16,19 +13,34 @@
         //prendo l'username dall'url
         $user = $_GET["user"];
 
+        //query per controllare che l'utente con quel nome abbia quell'hash nel db
+        $query = "SELECT COUNT(*) FROM utente WHERE username = ? AND codiceRegistrazione = ?";
+        $tipo = "ss";
 
-        //mi collego al db
-        $mysqli = new mysqli($servername, $usernamedb, $passworddb, $dbname);
-        $mysqli->set_charset("utf8mb4");
+        //prendo il numero che ritorna la funzione (0 -> non trovato; 1 -> trovato)
+        $risultato = $classeDB->seleziona($query, $tipo, $user, $hash);
+        $variabile = "";
+        foreach($risultato as $temp){
+            $variabile = $temp;
+            break;
+        }
 
-        //cambio nel db il codiceRegistrazione a 0
-        $query = "UPDATE utente SET codiceRegistrazione = '0' WHERE username = '$user'";
-        $result = $mysqli->query($query);
+        //se utente trovato, abilita l'account
+        if($variabile != "0"){
+            $query = "UPDATE utente SET codiceRegistrazione = '0' WHERE username = ?";
+            $tipo = "s";
 
-        if($result){
-            echo "Account attivato";
+            //aggiorna il codiceRegistrazione dell'utente
+            if($classeDB->aggiorna($query, $tipo, $user)){
+                echo "Account attivato";
+            }
+            else{
+                echo "Errore, account non attivato";
+            }
         }
         else{
-            echo "Errore, account non attivato";
+            echo "questo utente ha già attivato l'account";
         }
+
+        $classeDB->chiudiConnessione();
     }

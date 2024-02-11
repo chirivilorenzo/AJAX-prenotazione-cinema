@@ -38,7 +38,7 @@
             }
         }
 
-        public function seleziona($query, $tipoParametri, $nomeColonna, ...$parametri){
+        public function seleziona($query, $tipoParametri, ...$parametri){
             $stmt = $this->mysqli->prepare($query);
 
             $stmt->bind_param($tipoParametri, ...$parametri);
@@ -49,7 +49,7 @@
 
             if($row !== false){
                 $stmt->close();
-                return $row[$nomeColonna];
+                return $row;
             }
             else{
                 return "errore";
@@ -71,8 +71,19 @@
             }
         }
 
-        public function aggiorna(){
+        public function aggiorna($query, $tipoParametri, ...$parametri){
+            $stmt = $this->mysqli->prepare($query);
+            
+            $stmt->bind_param($tipoParametri, ...$parametri);
 
+            if($stmt->execute()){
+                $stmt->close();
+                return true;
+            }
+            else{
+                $stmt->close();
+                return false;
+            }
         }
 
         public function chiudiConnessione(){

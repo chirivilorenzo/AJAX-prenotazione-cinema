@@ -3,6 +3,8 @@
         session_start();
     }
 
+    include("classi/CDatabase.php");
+
     
     if($_SERVER["REQUEST_METHOD"] === "POST"){
         
@@ -12,20 +14,14 @@
 
 
         //mi collego al db e cerco l'utente
-        $config = parse_ini_file("../CONFIGURAZIONE/config.ini", true);
+        $classeDB = new CDatabase();
+        $classeDB->connessione();
 
-        $servername = $config["database"]["servername"];
-        $username = $config["database"]["username"];
-        $password = $config["database"]["password"];
-        $dbname = $config["database"]["dbname"];
+        $query = "SELECT * FROM utente WHERE username = ? AND password = ?";
+        $tipo = "ss";
+        $row = $classeDB->seleziona($query, $tipo, $user, $psw);
 
-
-        $mysqli = new mysqli($servername, $username, $password, $dbname);
-        $mysqli->set_charset('utf8mb4');
-
-        $result = $mysqli->query("SELECT * FROM utente WHERE username = '$user' AND password = '$psw'");
-
-        if(($row = $result->fetch_assoc()) != null){
+        if($row != "errore"){
             if($row["codiceRegistrazione"] != "0"){
                 echo "301"; //l'utente è nel db ma non ha attivato il suo account dalla mail
             }
@@ -48,6 +44,8 @@
             //utente non trovato
             echo "404";
         }
+
+        $classeDB->chiudiConnessione();
     }
     else{
         echo "401";
