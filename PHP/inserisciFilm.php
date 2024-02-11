@@ -28,6 +28,7 @@
         $query = "INSERT INTO film (titolo, durata, locandina) VALUES (?, ?, ?)";
         $tipo = "sss";
         
+        //inserisce il film nel db
         if($classeDB->inserisci($query, $tipo, $titolo, $durata, $immagine)){
             $flag = 1;
             $lastID = $classeDB->getLastID();
@@ -43,6 +44,8 @@
             //prima devo prendere tutti gli id dei generi che ha selezionato l'admin
             $nuovoArray = array();
             foreach ($generi as $genereNome){
+
+                //prendo dal db l'id dei generi selezionati e li metto in un vettore
                 $query = "SELECT ID FROM genere WHERE nome=?";
                 $tipo = "s";
                 $elemento = $classeDB->seleziona($query, $tipo, $genereNome);
@@ -55,9 +58,10 @@
                 }
             }
 
-
+            //scorro il nuovo vettore
             foreach($nuovoArray as $genereID){
 
+                //inserisco nel db il film con i suoi generi
                 $query = "INSERT INTO `film-genere` (idFilm, idGenere) VALUES (?, ?)";
                 $tipo = "ii";
 
@@ -71,9 +75,9 @@
         $classeDB->chiudiConnessione();
 
         if($flag == 1){
-            echo "200";
+            echo "200"; //film aggiunto
         }
         else{
-            echo "300";
+            echo "300"; //film non aggiunto
         }
     }

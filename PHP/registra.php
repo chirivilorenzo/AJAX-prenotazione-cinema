@@ -13,15 +13,15 @@
         $psw = md5($_POST["password"]);
         $email = $_POST["email"];
 
-
+        //inserisco nel db l'utente
         $query = "INSERT INTO utente (username, password, email) VALUES (?, ?, ?)";
         $tipo = "sss";
 
         if($classeDB->inserisci($query, $tipo, $user, $psw, $email)){
-            echo "200";
+            echo "200"; //utente inserito
         }
         else{
-            echo "301";
+            echo "301"; //utente non inserito
         }
 
         $classeDB->chiudiConnessione();

@@ -8,7 +8,7 @@
     
     if($_SERVER["REQUEST_METHOD"] === "POST"){
         
-        //controllare se l'utente è registrato nel db
+        //prendo le info in post
         $user = $_POST["username"];
         $psw = md5($_POST["password"]);
 
@@ -30,23 +30,22 @@
 
                 if($row["amministratore"] == 1){
                     $_SESSION["admin"] = true;
-                    echo "admin";
+                    echo "admin";   //l'utente è un admin
                     exit();
                 }
                 else if($row["2FA"] == 0){
-                    echo "201"; //ritorna se non ha il 2fa attivato
+                    echo "201"; //l'utente non ha il 2fa attivo
                     exit();
                 }
-                echo "200"; //ritorna se ha il 2fa attivato
+                echo "200"; //l'utente ha il 2fa
             }
         }
         else{
-            //utente non trovato
-            echo "404";
+            echo "404"; //utente non trovato
         }
 
         $classeDB->chiudiConnessione();
     }
     else{
-        echo "401";
+        echo "401"; //se si prova ad accedere alla pagina da browser
     }
