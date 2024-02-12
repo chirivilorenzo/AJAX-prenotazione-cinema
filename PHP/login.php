@@ -19,21 +19,22 @@
 
         $query = "SELECT * FROM utente WHERE username = ? AND password = ?";
         $tipo = "ss";
-        $row = $classeDB->seleziona($query, $tipo, $user, $psw);
+        $row = $classeDB->seleziona($query, $tipo , $user, $psw);
+
 
         if($row != "errore"){
-            if($row["codiceRegistrazione"] != "0"){
+            if($row[0]["codiceRegistrazione"] != "0"){
                 echo "301"; //l'utente è nel db ma non ha attivato il suo account dalla mail
             }
             else{
                 $_SESSION["username"] = $user;
 
-                if($row["amministratore"] == 1){
+                if($row[0]["amministratore"] == 1){
                     $_SESSION["admin"] = true;
                     echo "admin";   //l'utente è un admin
                     exit();
                 }
-                else if($row["2FA"] == 0){
+                else if($row[0]["2FA"] == 0){
                     echo "201"; //l'utente non ha il 2fa attivo
                     exit();
                 }

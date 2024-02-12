@@ -19,8 +19,9 @@
 
         //prendo il numero che ritorna la funzione (0 -> non trovato; 1 -> trovato)
         $risultato = $classeDB->seleziona($query, $tipo, $user, $hash);
-        $variabile = "";
-        foreach($risultato as $temp){
+        $variabile = $risultato[0];
+
+        foreach($variabile as $temp){
             $variabile = $temp;
             break;
         }

@@ -41,15 +41,20 @@
         public function seleziona($query, $tipoParametri, ...$parametri){
             $stmt = $this->mysqli->prepare($query);
 
-            $stmt->bind_param($tipoParametri, ...$parametri);
-            $stmt->execute();
+            if($tipoParametri != ""){
+                $stmt->bind_param($tipoParametri, ...$parametri);
+            }
 
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
+            if($stmt->execute()){
+                $result = $stmt->get_result();
 
-            if($row !== false){
+                $rows = array();
+                while($row = $result->fetch_assoc()){
+                    $rows[] = $row;
+                }
+    
                 $stmt->close();
-                return $row;
+                return $rows;
             }
             else{
                 return "errore";

@@ -31,10 +31,10 @@
                 exit();
             }
             else{
-                $nomeUtente = $elemento["username"];
+                $nomeUtente = $elemento[0]["username"];
 
                 //genera l'hash
-                $hash = md5($elemento["ID"] . $elemento["username"] . $elemento["email"]);
+                $hash = md5($elemento[0]["ID"] . $elemento[0]["username"] . $elemento[0]["email"]);
 
                 //ora salvo l'hash dentro al campo dell'utente interessato
                 $query = "UPDATE utente SET codiceRegistrazione = ? WHERE email = ?";

@@ -1,31 +1,20 @@
 <?php
-    if(!isset($_SESSION)){
-        session_start();
-    }
 
     header('Content-Type: application/json');
+    include("../classi/CDatabase.php");
 
     
     if($_SERVER["REQUEST_METHOD"] === "GET"){
         
-        //mi collego al db e cerco l'utente
-        $config = parse_ini_file("../../CONFIGURAZIONE/config.ini", true);
+        $classeDB = new CDatabase();
+        $classeDB->connessione();
 
-        $servername = $config["database"]["servername"];
-        $username = $config["database"]["username"];
-        $password = $config["database"]["password"];
-        $dbname = $config["database"]["dbname"];
-
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-        $mysqli = new mysqli($servername, $username, $password, $dbname);
-        $mysqli->set_charset('utf8mb4');
-
-        $result = $mysqli->query("SELECT * FROM genere");
+        $query = "SELECT * FROM genere";
+        $result = $classeDB->seleziona($query, "",);
 
         $generi = [];
-        while($row = $result->fetch_assoc()){
-            $generi[] = $row;
+        foreach($result as $elemento){
+            $generi[] = $elemento;
         }
 
         echo json_encode($generi);
