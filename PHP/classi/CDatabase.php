@@ -91,6 +91,24 @@
             }
         }
 
+        public function cercaSingoloRecord($query, $tipoParametri, ...$parametri){
+            $risultato = $this->seleziona($query, $tipoParametri, ...$parametri);
+
+            if($risultato != "errore"){
+                $variabile = $risultato[0];
+    
+                foreach($variabile as $temp){
+                    $variabile = $temp;
+                    break;
+                }
+    
+                return $variabile;
+            }
+            else{
+                return "errore";
+            }
+        }
+
         public function chiudiConnessione(){
             $this->mysqli->close();
         }

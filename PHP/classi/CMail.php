@@ -14,9 +14,9 @@
         public $contenuto;
 
         public function __construct(){
-            $this->username = "chirivilorenzo@gmail.com";
-            $this->password = "yddplfpynkpwimnb";
-            $this->mittente = "chirivilorenzo@gmail.com";
+            $this->username = "xxxxxxxxxxxxxxxx";
+            $this->password = "xxxxxxxxxxxxxxxx";
+            $this->mittente = "xxxxxxxxxxxxxxxx";
             $this->host = "smtp.gmail.com";
         }
 

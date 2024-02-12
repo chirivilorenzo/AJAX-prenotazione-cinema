@@ -17,14 +17,8 @@
         $query = "SELECT COUNT(*) FROM utente WHERE username = ? AND codiceRegistrazione = ?";
         $tipo = "ss";
 
-        //prendo il numero che ritorna la funzione (0 -> non trovato; 1 -> trovato)
-        $risultato = $classeDB->seleziona($query, $tipo, $user, $hash);
-        $variabile = $risultato[0];
-
-        foreach($variabile as $temp){
-            $variabile = $temp;
-            break;
-        }
+        //ritorna 1 se trova il record, 0 se non lo trova
+        $variabile = $classeDB->cercaSingoloRecord($query, $tipo, $user, $hash);
 
         //se utente trovato, abilita l'account
         if($variabile != "0"){
