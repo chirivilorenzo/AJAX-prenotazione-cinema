@@ -94,8 +94,9 @@
                 }
             }
         }
+        
+        //recupera password dell'utente
         else if($operazione == "recupera_psw"){
-            //recupera password dell'utente
             $hash = generaHash($classeDB);
 
             if($hash != "errore"){
